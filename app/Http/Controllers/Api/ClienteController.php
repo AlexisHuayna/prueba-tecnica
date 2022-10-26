@@ -3,13 +3,23 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Processes\ClientProcess;
+use App\Http\Processes\CouponProcess;
 use App\Http\Resources\ClienteResource;
+use App\Http\Resources\FullReport;
 use App\Models\Clientes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 class ClienteController extends Controller
 {
+    private $clientProcess;
+
+    public function __construct(ClientProcess $clientProcess)
+    {
+        $this->clientProcess = $clientProcess;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -92,5 +102,9 @@ class ClienteController extends Controller
         $cliente->delete();
 
         return response(null, 204);
+    }
+
+    public function getFullReport() {
+        return $this->clientProcess->getFullReport();
     }
 }
